@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: "Calm Sea" (bg-stone-50, text-slate-800, accent-teal-600) -->
     <!-- Application Structure Plan: A single-page application with a sticky top navigation for smooth scrolling between thematic sections (Introduction, Secret of Deliciousness, Commitment to Sustainability, Circular Economy, Partnership). This non-linear, exploratory structure was chosen over a simple document layout to allow users to engage with the story at their own pace, focusing on the interconnectedness of taste, environment, and sustainability, which is the core message of the report. Interactive diagrams and click-to-reveal elements will be used to present complex information concisely. -->
     <!-- Visualization & Content Choices: 1. Sustainability Flow: Goal=Organize, Method=HTML/CSS Flexbox diagram, Interaction=Click to reveal details. Justification=Visually represents the process without clutter. 2. Shell Recycling: Goal=Inform/Proportions, Method=Chart.js Donut Chart, Interaction=Animated render, tooltips. Justification=Quickly conveys the 100% recycling rate and scale (5000 tons). 3. Circular Economy: Goal=Organize, Method=HTML/CSS circular diagram, Interaction=Static visual. Justification=Clearly shows the positive feedback loop from sea to land and back. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
@@ -55,6 +55,19 @@
         .plus-icon {
             transition: transform 0.3s ease-in-out;
         }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #0d9488;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -71,7 +84,7 @@
     </header>
 
     <main>
-        <section id="home" class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('https://placehold.co/1200x800/a7d8de/ffffff?text=%E6%B5%9C%E8%92%B8%E3%81%97%E3%81%8B%E3%81%8D');">
+        <section id="home" class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('230829-main.jpg');">
             <div class="text-center bg-white/70 backdrop-blur-sm p-8 md:p-12 rounded-lg shadow-lg">
                 <h1 class="text-3xl md:text-5xl font-bold text-slate-900 leading-tight">
                     ぷりっぷりの、その先へ。
@@ -107,6 +120,27 @@
                         <h3 class="mt-4 text-xl font-bold">高い塩分濃度</h3>
                         <p class="mt-2 text-slate-600">常に塩分濃度が高く保たれるため、雑味のない、かき本来のクリアで濃厚な味わいが生まれます。</p>
                     </div>
+                </div>
+
+                <div class="mt-16 pt-8 border-t border-slate-200">
+                    <h3 class="text-2xl md:text-3xl font-bold text-center text-slate-900 mb-6">✨ かきレシピ生成</h3>
+                    <p class="max-w-xl mx-auto text-center text-slate-600 mb-6">「奥長 浜蒸しかき」を使った新しいレシピを提案します。どんなスタイルのレシピがお好みですか？</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto">
+                        <input type="text" id="recipeStyleInput" placeholder="例: 和風、洋風、簡単" class="flex-grow p-3 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
+                        <button id="generateRecipeBtn" class="bg-teal-600 text-white font-bold py-3 px-6 rounded-full hover:bg-teal-700 transition-colors duration-300 shadow-md flex items-center justify-center">
+                            レシピを生成
+                            <div id="recipeLoadingSpinner" class="loading-spinner ml-2"></div>
+                        </button>
+                    </div>
+                    <div id="recipeOutput" class="mt-8 bg-slate-50 p-6 rounded-lg shadow-md hidden">
+                        <h4 id="recipeName" class="text-xl font-bold text-teal-700 mb-2"></h4>
+                        <p id="recipeDescription" class="text-slate-700 mb-4"></p>
+                        <h5 class="text-lg font-bold text-slate-800 mb-2">材料</h5>
+                        <ul id="recipeIngredients" class="list-disc list-inside text-slate-600 mb-4"></ul>
+                        <h5 class="text-lg font-bold text-slate-800 mb-2">作り方</h5>
+                        <ol id="recipeInstructions" class="list-decimal list-inside text-slate-600"></ol>
+                    </div>
+                    <p id="recipeError" class="mt-4 text-red-600 text-center hidden">レシピの生成中にエラーが発生しました。もう一度お試しください。</p>
                 </div>
             </div>
         </section>
@@ -333,6 +367,134 @@
                     }
                 });
             }
+
+            // Gemini API Integration for Recipe Generation
+            const generateRecipeBtn = document.getElementById('generateRecipeBtn');
+            const recipeStyleInput = document.getElementById('recipeStyleInput');
+            const recipeOutput = document.getElementById('recipeOutput');
+            const recipeNameElem = document.getElementById('recipeName');
+            const recipeDescriptionElem = document.getElementById('recipeDescription');
+            const recipeIngredientsElem = document.getElementById('recipeIngredients');
+            const recipeInstructionsElem = document.getElementById('recipeInstructions');
+            const recipeLoadingSpinner = document.getElementById('recipeLoadingSpinner');
+            const recipeErrorElem = document.getElementById('recipeError');
+
+            generateRecipeBtn.addEventListener('click', async () => {
+                const style = recipeStyleInput.value.trim();
+                const prompt = `奥長 浜蒸しかきを使った${style ? style + 'の' : ''}レシピを提案してください。レシピ名、簡単な説明、材料リスト、作り方をJSON形式で出力してください。JSONスキーマは以下の通りです。
+                {
+                    "type": "OBJECT",
+                    "properties": {
+                        "recipeName": { "type": "STRING" },
+                        "description": { "type": "STRING" },
+                        "ingredients": {
+                            "type": "ARRAY",
+                            "items": { "type": "STRING" }
+                        },
+                        "instructions": {
+                            "type": "ARRAY",
+                            "items": { "type": "STRING" }
+                        }
+                    },
+                    "propertyOrdering": ["recipeName", "description", "ingredients", "instructions"]
+                }`;
+
+                recipeOutput.classList.add('hidden');
+                recipeErrorElem.classList.add('hidden');
+                recipeLoadingSpinner.style.display = 'block';
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                
+                const payload = {
+                    contents: chatHistory,
+                    generationConfig: {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                            type: "OBJECT",
+                            properties: {
+                                "recipeName": { "type": "STRING" },
+                                "description": { "type": "STRING" },
+                                "ingredients": {
+                                    "type": "ARRAY",
+                                    "items": { "type": "STRING" }
+                                },
+                                "instructions": {
+                                    "type": "ARRAY",
+                                    "items": { "type": "STRING" }
+                                }
+                            },
+                            "propertyOrdering": ["recipeName", "description", "ingredients", "instructions"]
+                        }
+                    }
+                };
+
+                const apiKey = ""; // If you want to use models other than gemini-2.5-flash-preview-05-20 or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                let retryCount = 0;
+                const maxRetries = 5;
+                const baseDelay = 1000; // 1 second
+
+                async function fetchWithExponentialBackoff() {
+                    try {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            if (response.status === 429 && retryCount < maxRetries) { // Too Many Requests
+                                const delay = baseDelay * Math.pow(2, retryCount);
+                                retryCount++;
+                                await new Promise(resolve => setTimeout(resolve, delay));
+                                return await fetchWithExponentialBackoff(); // Retry
+                            } else {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                        }
+
+                        const result = await response.json();
+                        
+                        if (result.candidates && result.candidates.length > 0 &&
+                            result.candidates[0].content && result.candidates[0].content.parts &&
+                            result.candidates[0].content.parts.length > 0) {
+                            const json = result.candidates[0].content.parts[0].text;
+                            const parsedJson = JSON.parse(json);
+
+                            recipeNameElem.textContent = parsedJson.recipeName;
+                            recipeDescriptionElem.textContent = parsedJson.description;
+
+                            recipeIngredientsElem.innerHTML = '';
+                            parsedJson.ingredients.forEach(item => {
+                                const li = document.createElement('li');
+                                li.textContent = item;
+                                recipeIngredientsElem.appendChild(li);
+                            });
+
+                            recipeInstructionsElem.innerHTML = '';
+                            parsedJson.instructions.forEach(step => {
+                                const li = document.createElement('li');
+                                li.textContent = step;
+                                recipeInstructionsElem.appendChild(li);
+                            });
+
+                            recipeOutput.classList.remove('hidden');
+                        } else {
+                            recipeErrorElem.textContent = 'レシピの構造が期待通りではありませんでした。';
+                            recipeErrorElem.classList.remove('hidden');
+                        }
+                    } catch (error) {
+                        recipeErrorElem.textContent = `レシピの生成中にエラーが発生しました: ${error.message}`;
+                        recipeErrorElem.classList.remove('hidden');
+                    } finally {
+                        recipeLoadingSpinner.style.display = 'none';
+                    }
+                }
+
+                await fetchWithExponentialBackoff();
+            });
         });
     </script>
 </body>
