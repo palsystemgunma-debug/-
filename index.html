@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パルシステム「奥長 浜蒸しかき」特集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: "Calm Sea" (bg-stone-50, text-slate-800, accent-teal-600) -->
+    <!-- Application Structure Plan: A single-page application with a sticky top navigation for smooth scrolling between thematic sections (Introduction, Secret of Deliciousness, Commitment to Sustainability, Circular Economy, Partnership). This non-linear, exploratory structure was chosen over a simple document layout to allow users to engage with the story at their own pace, focusing on the interconnectedness of taste, environment, and sustainability, which is the core message of the report. Interactive diagrams and click-to-reveal elements will be used to present complex information concisely. -->
+    <!-- Visualization & Content Choices: 1. Sustainability Flow: Goal=Organize, Method=HTML/CSS Flexbox diagram, Interaction=Click to reveal details. Justification=Visually represents the process without clutter. 2. Shell Recycling: Goal=Inform/Proportions, Method=Chart.js Donut Chart, Interaction=Animated render, tooltips. Justification=Quickly conveys the 100% recycling rate and scale (5000 tons). 3. Circular Economy: Goal=Organize, Method=HTML/CSS circular diagram, Interaction=Static visual. Justification=Clearly shows the positive feedback loop from sea to land and back. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #0d9488; /* teal-600 */
+            border-bottom-color: #0d9488; /* teal-600 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-item-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .flow-item.active .flow-item-content {
+            max-height: 500px;
+        }
+        .flow-item.active .plus-icon {
+            transform: rotate(45deg);
+        }
+        .plus-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="navbar" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3">
+            <ul class="flex justify-center space-x-4 md:space-x-8 text-sm md:text-base">
+                <li><a href="#secret" class="nav-link pb-1">おいしさの秘密</a></li>
+                <li><a href="#commitment" class="nav-link pb-1">海へのこだわり</a></li>
+                <li><a href="#cycle" class="nav-link pb-1">循環の物語</a></li>
+                <li><a href="#partnership" class="nav-link pb-1">パルシステムと</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('https://placehold.co/1200x800/a7d8de/ffffff?text=%E6%B5%9C%E8%92%B8%E3%81%97%E3%81%8B%E3%81%8D');">
+            <div class="text-center bg-white/70 backdrop-blur-sm p-8 md:p-12 rounded-lg shadow-lg">
+                <h1 class="text-3xl md:text-5xl font-bold text-slate-900 leading-tight">
+                    ぷりっぷりの、その先へ。
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-slate-700">
+                    一粒のかきに、豊かな海の物語。
+                </p>
+                <a href="#secret" class="mt-8 inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-full hover:bg-teal-700 transition-colors duration-300 shadow-md">
+                    物語をのぞく
+                </a>
+            </div>
+        </section>
+
+        <section id="secret" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">おいしさの秘密</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-center text-slate-600">
+                    岡山県・虫明湾。穏やかな気候と、豊富なエサに恵まれたこの場所が、かき本来の濃厚なうまみを引き出します。なぜ、ここのかきは特別なのでしょうか。その秘密は、かきが育つ恵まれた環境そのものにあります。
+                </p>
+                <div class="mt-12 grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
+                        <div class="text-4xl text-teal-600">🌊</div>
+                        <h3 class="mt-4 text-xl font-bold">穏やかな湾</h3>
+                        <p class="mt-2 text-slate-600">大小の島々が波や風から養殖いかだを守り、かきがストレスなくのびのびと育つ、湖のように静かな環境です。</p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
+                        <div class="text-4xl text-teal-600">✨</div>
+                        <h3 class="mt-4 text-xl font-bold">清浄な水質</h3>
+                        <p class="mt-2 text-slate-600">殺菌処理が不要なほど清らかな海水。大きな川の流入が少なく、かきの生育に最適な水質が保たれています。</p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
+                        <div class="text-4xl text-teal-600">🧂</div>
+                        <h3 class="mt-4 text-xl font-bold">高い塩分濃度</h3>
+                        <p class="mt-2 text-slate-600">常に塩分濃度が高く保たれるため、雑味のない、かき本来のクリアで濃厚な味わいが生まれます。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="commitment" class="py-16 md:py-24 bg-slate-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">海へのこだわり</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-center text-slate-600">
+                    「豊かな海を守りながら養殖を続ける」。邑久町漁協の漁師たちは、その強い使命感のもと、持続可能な漁業に取り組んでいます。一つひとつの工程に、未来の海への想いが込められています。下の項目をクリックして詳細をご覧ください。
+                </p>
+                <div id="flow-container" class="mt-12 max-w-4xl mx-auto space-y-4">
+                    <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flow-item-header p-6 flex justify-between items-center cursor-pointer">
+                            <div class="flex items-center">
+                                <span class="text-2xl text-teal-600 mr-4">①</span>
+                                <h3 class="text-xl font-bold">地種から育てる</h3>
+                            </div>
+                            <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
+                        </div>
+                        <div class="flow-item-content">
+                            <p class="px-6 pb-6 text-slate-600">地元の環境で生まれた種がきを95%使用。その土地に合った丈夫なかきを育てることで、外部からの病気リスクを減らし、自然な生態系を守ります。</p>
+                        </div>
+                    </div>
+                     <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flow-item-header p-6 flex justify-between items-center cursor-pointer">
+                            <div class="flex items-center">
+                                <span class="text-2xl text-teal-600 mr-4">②</span>
+                                <h3 class="text-xl font-bold">ゆとりある養殖</h3>
+                            </div>
+                            <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
+                        </div>
+                        <div class="flow-item-content">
+                            <p class="px-6 pb-6 text-slate-600">養殖いかだの間隔を広く取り、育てる量を制限。これにより潮の流れが良くなり、一粒一粒に栄養が行き渡り、大きくて肉厚なかきが育ちます。</p>
+                        </div>
+                    </div>
+                     <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flow-item-header p-6 flex justify-between items-center cursor-pointer">
+                            <div class="flex items-center">
+                                <span class="text-2xl text-teal-600 mr-4">③</span>
+                                <h3 class="text-xl font-bold">環境を守る活動</h3>
+                            </div>
+                            <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
+                        </div>
+                        <div class="flow-item-content">
+                            <p class="px-6 pb-6 text-slate-600">魚の産卵場所となる藻場の再生活動や、天然素材の養殖いかだの使用など、豊かな海を未来へつなぐための地道な努力を続けています。</p>
+                        </div>
+                    </div>
+                     <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flow-item-header p-6 flex justify-between items-center cursor-pointer">
+                            <div class="flex items-center">
+                                <span class="text-2xl text-teal-600 mr-4">④</span>
+                                <h3 class="text-xl font-bold">国際的な認証</h3>
+                            </div>
+                            <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
+                        </div>
+                        <div class="flow-item-content">
+                            <p class="px-6 pb-6 text-slate-600">2019年には、持続可能な漁業の証である「MSC認証」を取得。若手漁師が中心となり、豊かな海と共存する漁業が国際的にも認められました。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cycle" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">捨てるところがない、循環の物語</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-center text-slate-600">
+                    邑久町のかき養殖は、海で終わりません。水揚げされた後のかき殻は、大切な資源として100%再利用。海から生まれた恵みが、陸を豊かにし、そして再び海へと還る。そんな美しい循環が、ここにはあります。
+                </p>
+                <div class="mt-12 grid md:grid-cols-2 gap-12 items-center">
+                    <div class="chart-container">
+                        <canvas id="cycleChart"></canvas>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <span class="text-3xl text-teal-600 mr-4">→</span>
+                            <div>
+                                <h3 class="text-xl font-bold">肥料・飼料へ</h3>
+                                <p class="mt-1 text-slate-600">カルシウム豊富な殻は、自前の工場で加工され、畑の土を元気にする肥料や、家畜の飼料に生まれ変わります。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-3xl text-teal-600 mr-4">→</span>
+                            <div>
+                                <h3 class="text-xl font-bold">「里海米」を育む</h3>
+                                <p class="mt-1 text-slate-600">かき殻の肥料で育てられたお米は「里海米」としてブランド化。海の恵みが、陸のおいしさにつながります。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <span class="text-3xl text-teal-600 mr-4">→</span>
+                            <div>
+                                <h3 class="text-xl font-bold">栄養が再び海へ</h3>
+                                <p class="mt-1 text-slate-600">お米を育んだ大地のミネラルは、川を通じて再び海へ。そして、またおいしいかきを育む栄養となるのです。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="partnership" class="py-16 md:py-24 bg-slate-50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">パルシステムとの約束</h2>
+                <p class="mt-4 max-w-3xl mx-auto text-center text-slate-600">
+                    2020年、パルシステムは邑久町漁協の循環型・持続型のかき養殖に共感し、産直提携を結びました。生産者の想いを食卓へ届けること、そして、多様なサイズのかきを活用することで、食品ロス削減にも貢献しています。
+                </p>
+                <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flex items-center justify-center h-48 bg-slate-100 text-6xl">🍤</div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold">おおきなカキフライ</h3>
+                            <p class="mt-2 text-slate-600">食べ応え抜群。ジューシーな旨みが口いっぱいに広がります。</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="flex items-center justify-center h-48 bg-slate-100 text-6xl">🦪</div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold">浜蒸しかき</h3>
+                            <p class="mt-2 text-slate-600">レンジで温めるだけ。ぷりっぷりの食感と磯の香りが手軽に楽しめます。</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden sm:col-span-2 lg:col-span-1">
+                        <div class="flex items-center justify-center h-48 bg-slate-100 text-6xl">🥣</div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold">かきチャウダー</h3>
+                            <p class="mt-2 text-slate-600">かきの旨みが溶け込んだ、心も体も温まるクリーミーな一品です。</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-12 bg-white p-8 rounded-lg shadow-sm max-w-3xl mx-auto text-center">
+                    <p class="text-slate-600 italic">「パルシステムでは商品に合わせていろんなサイズのかきを使ってもらえるので、ロスが出なくて非常に助かっています。今後も産直提携しているからこそできることを、一つひとつ増やしていきたいですね」</p>
+                    <p class="mt-4 font-bold text-slate-800">- 邑久町漁業協同組合 松本正樹さん</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <p>&copy; 2025 Pal System. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const navLinks = navbar.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            function updateActiveLink() {
+                let index = sections.length;
+
+                while(--index && window.scrollY + 50 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                
+                const activeLink = document.querySelector(`.nav-link[href="#${sections[index].id}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+            const flowContainer = document.getElementById('flow-container');
+            if (flowContainer) {
+                flowContainer.addEventListener('click', function(e) {
+                    const header = e.target.closest('.flow-item-header');
+                    if (!header) return;
+
+                    const item = header.parentElement;
+                    const currentlyActive = document.querySelector('.flow-item.active');
+                    
+                    if (currentlyActive && currentlyActive !== item) {
+                        currentlyActive.classList.remove('active');
+                    }
+                    
+                    item.classList.toggle('active');
+                });
+            }
+
+            const ctx = document.getElementById('cycleChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['肥料・飼料への再利用'],
+                        datasets: [{
+                            label: 'かき殻の再利用率',
+                            data: [100],
+                            backgroundColor: [
+                                'rgba(13, 148, 136, 0.8)', // teal-600 with opacity
+                            ],
+                            borderColor: [
+                                'rgba(15, 118, 110, 1)', // teal-700
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return ` ${context.label}: 100% (年間約5000トン)`;
+                                    }
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'かき殻のゆくえ',
+                                font: {
+                                    size: 18
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
