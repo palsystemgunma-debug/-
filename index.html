@@ -12,12 +12,17 @@
     <!-- Chosen Palette: "Calm Sea" (bg-stone-50, text-slate-800, accent-teal-600) -->
     <!-- Application Structure Plan: A single-page application with a sticky top navigation for smooth scrolling between thematic sections (Introduction, Secret of Deliciousness, Commitment to Sustainability, Circular Economy, Partnership). This non-linear, exploratory structure was chosen over a simple document layout to allow users to engage with the story at their own pace, focusing on the interconnectedness of taste, environment, and sustainability, which is the core message of the report. Interactive diagrams and click-to-reveal elements will be used to present complex information concisely. -->
     <!-- Visualization & Content Choices: 1. Sustainability Flow: Goal=Organize, Method=HTML/CSS Flexbox diagram, Interaction=Click to reveal details. Justification=Visually represents the process without clutter. 2. Shell Recycling: Goal=Inform/Proportions, Method=Chart.js Donut Chart, Interaction=Animated render, tooltips. Justification=Quickly conveys the 100% recycling rate and scale (5000 tons). 3. Circular Economy: Goal=Organize, Method=HTML/CSS circular diagram, Interaction=Static visual. Justification=Clearly shows the positive feedback loop from sea to land and back. CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background-color: #f8fafc; /* slate-50 */
             color: #1e293b; /* slate-800 */
+            /* 全体に背景画像を固定表示 */
+            background-image: url('230829-main.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
         .nav-link {
             transition: color 0.3s, border-bottom-color 0.3s;
@@ -84,7 +89,7 @@
     </header>
 
     <main>
-        <section id="home" class="min-h-screen flex items-center justify-center bg-cover bg-center" style="background-image: url('230829-main.jpg');">
+        <section id="home" class="min-h-screen flex items-center justify-center">
             <div class="text-center bg-white/70 backdrop-blur-sm p-8 md:p-12 rounded-lg shadow-lg">
                 <h1 class="text-3xl md:text-5xl font-bold text-slate-900 leading-tight">
                     ぷりっぷりの、その先へ。
@@ -108,39 +113,18 @@
                     <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
                         <div class="text-4xl text-teal-600">🌊</div>
                         <h3 class="mt-4 text-xl font-bold">穏やかな湾</h3>
-                        <p class="mt-2 text-slate-600">大小の島々が波や風から養殖いかだを守り、かきがストレスなくのびのびと育つ、湖のように静かな環境です。</p>
+                        <p class="mt-2 text-slate-600">虫明湾は、大小の島々が天然の防波堤となり、外洋からの荒波や強風を効果的に遮断します。これにより、養殖いかだは常に安定した環境下に置かれ、かきは外部からのストレスを受けることなく、その成長サイクルを穏やかに進行させることが可能です。この静穏な水域は、かきが本来持つ風味と食感を最大限に引き出す上で不可欠な要素となります。</p>
                     </div>
                     <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
                         <div class="text-4xl text-teal-600">✨</div>
                         <h3 class="mt-4 text-xl font-bold">清浄な水質</h3>
-                        <p class="mt-2 text-slate-600">殺菌処理が不要なほど清らかな海水。大きな川の流入が少なく、かきの生育に最適な水質が保たれています。</p>
+                        <p class="mt-2 text-slate-600">虫明湾の海水は、大規模な河川からの流入が極めて少ないため、泥や有機物の堆積が抑制され、年間を通じて非常に高い透明度と清浄度が維持されています。この自然の清浄性は、かきに対する人工的な殺菌処理を不要とし、かき本来の鮮度と風味を損なうことなく、消費者の食卓へ届けることを可能にしています。この優れた水質は、長年にわたる漁業者の環境保全活動によっても支えられています。</p>
                     </div>
                     <div class="bg-slate-50 p-8 rounded-lg shadow-sm">
                         <div class="text-4xl text-teal-600">🧂</div>
                         <h3 class="mt-4 text-xl font-bold">高い塩分濃度</h3>
-                        <p class="mt-2 text-slate-600">常に塩分濃度が高く保たれるため、雑味のない、かき本来のクリアで濃厚な味わいが生まれます。</p>
+                        <p class="mt-2 text-slate-600">虫明湾は、外洋との海水交換が適度に行われつつも、河川水の流入が少ないため、年間を通じて安定して高い塩分濃度が保たれています。この高塩分濃度の環境は、かきが健全に成長するために必要なミネラル分を豊富に供給し、かつ、かき特有の濃厚な旨味成分を凝縮させる効果があります。結果として、雑味が一切なく、かき本来のクリアで深みのある味わいが実現されます。</p>
                     </div>
-                </div>
-
-                <div class="mt-16 pt-8 border-t border-slate-200">
-                    <h3 class="text-2xl md:text-3xl font-bold text-center text-slate-900 mb-6">✨ かきレシピ生成</h3>
-                    <p class="max-w-xl mx-auto text-center text-slate-600 mb-6">「奥長 浜蒸しかき」を使った新しいレシピを提案します。どんなスタイルのレシピがお好みですか？</p>
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-md mx-auto">
-                        <input type="text" id="recipeStyleInput" placeholder="例: 和風、洋風、簡単" class="flex-grow p-3 border border-slate-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-500">
-                        <button id="generateRecipeBtn" class="bg-teal-600 text-white font-bold py-3 px-6 rounded-full hover:bg-teal-700 transition-colors duration-300 shadow-md flex items-center justify-center">
-                            レシピを生成
-                            <div id="recipeLoadingSpinner" class="loading-spinner ml-2"></div>
-                        </button>
-                    </div>
-                    <div id="recipeOutput" class="mt-8 bg-slate-50 p-6 rounded-lg shadow-md hidden">
-                        <h4 id="recipeName" class="text-xl font-bold text-teal-700 mb-2"></h4>
-                        <p id="recipeDescription" class="text-slate-700 mb-4"></p>
-                        <h5 class="text-lg font-bold text-slate-800 mb-2">材料</h5>
-                        <ul id="recipeIngredients" class="list-disc list-inside text-slate-600 mb-4"></ul>
-                        <h5 class="text-lg font-bold text-slate-800 mb-2">作り方</h5>
-                        <ol id="recipeInstructions" class="list-decimal list-inside text-slate-600"></ol>
-                    </div>
-                    <p id="recipeError" class="mt-4 text-red-600 text-center hidden">レシピの生成中にエラーが発生しました。もう一度お試しください。</p>
                 </div>
             </div>
         </section>
@@ -161,7 +145,7 @@
                             <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
                         </div>
                         <div class="flow-item-content">
-                            <p class="px-6 pb-6 text-slate-600">地元の環境で生まれた種がきを95%使用。その土地に合った丈夫なかきを育てることで、外部からの病気リスクを減らし、自然な生態系を守ります。</p>
+                            <p class="px-6 pb-6 text-slate-600">邑久町漁業協同組合では、かき養殖の出発点となる種がきを、95%という高比率で地元虫明湾の自然環境から採取し、育成しています。これにより、その土地の気候や水質に最も適応した、丈夫で健康なかきを育てることが可能となります。外部からの種がきに依存するリスクを低減し、地域固有の生態系と調和した持続可能な養殖サイクルを確立しています。</p>
                         </div>
                     </div>
                      <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
@@ -173,7 +157,7 @@
                             <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
                         </div>
                         <div class="flow-item-content">
-                            <p class="px-6 pb-6 text-slate-600">養殖いかだの間隔を広く取り、育てる量を制限。これにより潮の流れが良くなり、一粒一粒に栄養が行き渡り、大きくて肉厚なかきが育ちます。</p>
+                            <p class="px-6 pb-6 text-slate-600">養殖いかだの配置においては、過密状態を避け、個々のかきに十分な空間を確保しています。このゆとりある配置は、潮の流れを最適化し、かき一つひとつに豊富な栄養分が行き渡ることを可能にします。結果として、かきはより大きく、肉厚に成長し、その品質が向上します。また、養殖密度の管理は、海水の富栄養化を抑制し、海洋環境への負荷を軽減する重要な役割も果たしています。</p>
                         </div>
                     </div>
                      <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
@@ -185,7 +169,7 @@
                             <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
                         </div>
                         <div class="flow-item-content">
-                            <p class="px-6 pb-6 text-slate-600">魚の産卵場所となる藻場の再生活動や、天然素材の養殖いかだの使用など、豊かな海を未来へつなぐための地道な努力を続けています。</p>
+                            <p class="px-6 pb-6 text-slate-600">邑久町漁業協同組合は、かき養殖だけでなく、虫明湾全体の海洋環境保全に積極的に取り組んでいます。具体的には、魚類の産卵場所や稚魚の生息域となる藻場（アマモなどの海草群生地）の再生活動を推進し、海の生態系の多様性を維持・向上させています。さらに、水質浄化のための海底掘り起こし作業や、プラスチックごみの発生を抑制するための天然素材を用いた養殖いかだの使用など、多角的なアプローチで豊かな海を未来へとつなぐ努力を継続しています。</p>
                         </div>
                     </div>
                      <div class="flow-item bg-white rounded-lg shadow-sm overflow-hidden">
@@ -197,7 +181,7 @@
                             <div class="plus-icon text-2xl text-teal-600 font-bold">+</div>
                         </div>
                         <div class="flow-item-content">
-                            <p class="px-6 pb-6 text-slate-600">2019年には、持続可能な漁業の証である「MSC認証」を取得。若手漁師が中心となり、豊かな海と共存する漁業が国際的にも認められました。</p>
+                            <p class="px-6 pb-6 text-slate-600">2019年、邑久町漁業協同組合は、持続可能な漁業を推進していることを証明する国際的な認証である「MSC認証」を取得しました。この認証は、水産資源の持続可能性、生態系への影響の最小化、そして効果的な管理体制が確立されていることを厳格に評価するものです。若手漁師たちが中心となり、この認証取得に向けた詳細な調査や手続きに尽力した結果、彼らの環境と共存する漁業への取り組みが国際的にも高く評価されるに至りました。</p>
                         </div>
                     </div>
                 </div>
@@ -208,7 +192,7 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">捨てるところがない、循環の物語</h2>
                 <p class="mt-4 max-w-3xl mx-auto text-center text-slate-600">
-                    邑久町のかき養殖は、海で終わりません。水揚げされた後のかき殻は、大切な資源として100%再利用。海から生まれた恵みが、陸を豊かにし、そして再び海へと還る。そんな美しい循環が、ここにはあります。
+                    邑久町のかき養殖は、単に生産活動に留まらず、資源の循環利用を核とした持続可能なシステムを構築しています。水揚げされた後のかき殻は、年間約5000トンにも及ぶ膨大な量となりますが、これらは貴重な資源として100%再利用されます。海から生まれた恵みが、陸の農業を豊かにし、その栄養が再び海へと還る。この一連の美しい循環が、邑久町の地域全体で実践されています。
                 </p>
                 <div class="mt-12 grid md:grid-cols-2 gap-12 items-center">
                     <div class="chart-container">
@@ -218,22 +202,22 @@
                         <div class="flex items-start">
                             <span class="text-3xl text-teal-600 mr-4">→</span>
                             <div>
-                                <h3 class="text-xl font-bold">肥料・飼料へ</h3>
-                                <p class="mt-1 text-slate-600">カルシウム豊富な殻は、自前の工場で加工され、畑の土を元気にする肥料や、家畜の飼料に生まれ変わります。</p>
+                                <h3 class="text-xl font-bold">肥料・飼料への転換</h3>
+                                <p class="mt-1 text-slate-600">かき殻は、その豊富なカルシウムとミネラル含有量を活かし、漁協が自前で保有する加工工場で粉砕・処理されます。これにより、高品質な有機肥料として農地に供給されるほか、家畜の健康維持に寄与する飼料としても有効活用され、資源の有効利用を促進しています。</p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <span class="text-3xl text-teal-600 mr-4">→</span>
                             <div>
-                                <h3 class="text-xl font-bold">「里海米」を育む</h3>
-                                <p class="mt-1 text-slate-600">かき殻の肥料で育てられたお米は「里海米」としてブランド化。海の恵みが、陸のおいしさにつながります。</p>
+                                <h3 class="text-xl font-bold">「里海米」の育成</h3>
+                                <p class="mt-1 text-slate-600">かき殻を原料とした肥料は、岡山県内の水田で土壌改良剤として使用され、その恩恵を受けたお米は「里海米」としてブランド化されています。これは、海洋資源が陸上の農業生産に直接的に貢献する、画期的な地域連携のモデルであり、海の恵みが陸の食文化を豊かにする具体的な事例となっています。</p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <span class="text-3xl text-teal-600 mr-4">→</span>
                             <div>
-                                <h3 class="text-xl font-bold">栄養が再び海へ</h3>
-                                <p class="mt-1 text-slate-600">お米を育んだ大地のミネラルは、川を通じて再び海へ。そして、またおいしいかきを育む栄養となるのです。</p>
+                                <h3 class="text-xl font-bold">栄養循環による再生</h3>
+                                <p class="mt-1 text-slate-600">「里海米」を育んだ水田や大地から流れ出たミネラル分は、河川を通じて再び虫明湾へと還流します。この自然な栄養循環は、かきが成長するための豊かな環境を再構築し、次世代のかき養殖を支える基盤となります。このように、海と陸の生態系が密接に連携し、持続可能な生産サイクルが確立されています。</p>
                             </div>
                         </div>
                     </div>
@@ -245,34 +229,40 @@
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-center text-slate-900">パルシステムとの約束</h2>
                 <p class="mt-4 max-w-3xl mx-auto text-center text-slate-600">
-                    2020年、パルシステムは邑久町漁協の循環型・持続型のかき養殖に共感し、産直提携を結びました。生産者の想いを食卓へ届けること、そして、多様なサイズのかきを活用することで、食品ロス削減にも貢献しています。
+                    パルシステムには、パルシステム商品の魅力や、便利な使い方を伝える組合員【PLA（パルシステム・ライフアシスタント）】という講師が活躍しています。この度、その講師活動をサポートする組合員【PLAビギナー】というサポーターを募集することになりました。ご興味ある方は、ぜひ以下のフォームよりご応募ください。
                 </p>
                 <div class="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                         <div class="flex items-center justify-center h-48 bg-slate-100 text-6xl">🍤</div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold">おおきなカキフライ</h3>
-                            <p class="mt-2 text-slate-600">食べ応え抜群。ジューシーな旨みが口いっぱいに広がります。</p>
+                            <p class="mt-2 text-slate-600">厳選された大粒のかきを使用し、衣はサクサク、中はジューシーに仕上げた逸品です。かき本来の濃厚な旨みが口いっぱいに広がり、食べ応えも抜群です。</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                         <div class="flex items-center justify-center h-48 bg-slate-100 text-6xl">🦪</div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold">浜蒸しかき</h3>
-                            <p class="mt-2 text-slate-600">レンジで温めるだけ。ぷりっぷりの食感と磯の香りが手軽に楽しめます。</p>
+                            <p class="mt-2 text-slate-600">新鮮なかきを水揚げ後すぐにスチーム加熱し、旨みをぎゅっと閉じ込めて急速凍結しました。電子レンジで温めるだけで、ぷりっぷりの食感と磯の香りを手軽にお楽しみいただけます。忙しい日でも本格的なかき料理が味わえます。</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-lg shadow-sm overflow-hidden sm:col-span-2 lg:col-span-1">
                         <div class="flex items-center justify-center h-48 bg-slate-100 text-6xl">🥣</div>
                         <div class="p-6">
                             <h3 class="text-xl font-bold">かきチャウダー</h3>
-                            <p class="mt-2 text-slate-600">かきの旨みが溶け込んだ、心も体も温まるクリーミーな一品です。</p>
+                            <p class="mt-2 text-slate-600">かきの豊かな旨みが溶け込んだ、心も体も温まるクリーミーなチャウダーです。新鮮なかきの風味が凝縮されており、パンやご飯との相性も抜群。寒い季節に特におすすめの一品です。</p>
                         </div>
                     </div>
                 </div>
                  <div class="mt-12 bg-white p-8 rounded-lg shadow-sm max-w-3xl mx-auto text-center">
                     <p class="text-slate-600 italic">「パルシステムでは商品に合わせていろんなサイズのかきを使ってもらえるので、ロスが出なくて非常に助かっています。今後も産直提携しているからこそできることを、一つひとつ増やしていきたいですね」</p>
                     <p class="mt-4 font-bold text-slate-800">- 邑久町漁業協同組合 松本正樹さん</p>
+                </div>
+                <div class="mt-12 text-center">
+                    <p class="text-lg text-slate-700 mb-4">このページについてのご意見・ご感想をお聞かせください。</p>
+                    <a href="https://forms.gle/GsWZGsnMSNtKwjQQA" target="_blank" rel="noopener noreferrer" class="inline-block bg-teal-600 text-white font-bold py-3 px-8 rounded-full hover:bg-teal-700 transition-colors duration-300 shadow-md">
+                        ご意見・ご感想はこちら
+                    </a>
                 </div>
             </div>
         </section>
@@ -369,132 +359,7 @@
             }
 
             // Gemini API Integration for Recipe Generation
-            const generateRecipeBtn = document.getElementById('generateRecipeBtn');
-            const recipeStyleInput = document.getElementById('recipeStyleInput');
-            const recipeOutput = document.getElementById('recipeOutput');
-            const recipeNameElem = document.getElementById('recipeName');
-            const recipeDescriptionElem = document.getElementById('recipeDescription');
-            const recipeIngredientsElem = document.getElementById('recipeIngredients');
-            const recipeInstructionsElem = document.getElementById('recipeInstructions');
-            const recipeLoadingSpinner = document.getElementById('recipeLoadingSpinner');
-            const recipeErrorElem = document.getElementById('recipeError');
-
-            generateRecipeBtn.addEventListener('click', async () => {
-                const style = recipeStyleInput.value.trim();
-                const prompt = `奥長 浜蒸しかきを使った${style ? style + 'の' : ''}レシピを提案してください。レシピ名、簡単な説明、材料リスト、作り方をJSON形式で出力してください。JSONスキーマは以下の通りです。
-                {
-                    "type": "OBJECT",
-                    "properties": {
-                        "recipeName": { "type": "STRING" },
-                        "description": { "type": "STRING" },
-                        "ingredients": {
-                            "type": "ARRAY",
-                            "items": { "type": "STRING" }
-                        },
-                        "instructions": {
-                            "type": "ARRAY",
-                            "items": { "type": "STRING" }
-                        }
-                    },
-                    "propertyOrdering": ["recipeName", "description", "ingredients", "instructions"]
-                }`;
-
-                recipeOutput.classList.add('hidden');
-                recipeErrorElem.classList.add('hidden');
-                recipeLoadingSpinner.style.display = 'block';
-
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                
-                const payload = {
-                    contents: chatHistory,
-                    generationConfig: {
-                        responseMimeType: "application/json",
-                        responseSchema: {
-                            type: "OBJECT",
-                            properties: {
-                                "recipeName": { "type": "STRING" },
-                                "description": { "type": "STRING" },
-                                "ingredients": {
-                                    "type": "ARRAY",
-                                    "items": { "type": "STRING" }
-                                },
-                                "instructions": {
-                                    "type": "ARRAY",
-                                    "items": { "type": "STRING" }
-                                }
-                            },
-                            "propertyOrdering": ["recipeName", "description", "ingredients", "instructions"]
-                        }
-                    }
-                };
-
-                const apiKey = ""; // If you want to use models other than gemini-2.5-flash-preview-05-20 or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-
-                let retryCount = 0;
-                const maxRetries = 5;
-                const baseDelay = 1000; // 1 second
-
-                async function fetchWithExponentialBackoff() {
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        if (!response.ok) {
-                            if (response.status === 429 && retryCount < maxRetries) { // Too Many Requests
-                                const delay = baseDelay * Math.pow(2, retryCount);
-                                retryCount++;
-                                await new Promise(resolve => setTimeout(resolve, delay));
-                                return await fetchWithExponentialBackoff(); // Retry
-                            } else {
-                                throw new Error(`HTTP error! status: ${response.status}`);
-                            }
-                        }
-
-                        const result = await response.json();
-                        
-                        if (result.candidates && result.candidates.length > 0 &&
-                            result.candidates[0].content && result.candidates[0].content.parts &&
-                            result.candidates[0].content.parts.length > 0) {
-                            const json = result.candidates[0].content.parts[0].text;
-                            const parsedJson = JSON.parse(json);
-
-                            recipeNameElem.textContent = parsedJson.recipeName;
-                            recipeDescriptionElem.textContent = parsedJson.description;
-
-                            recipeIngredientsElem.innerHTML = '';
-                            parsedJson.ingredients.forEach(item => {
-                                const li = document.createElement('li');
-                                li.textContent = item;
-                                recipeIngredientsElem.appendChild(li);
-                            });
-
-                            recipeInstructionsElem.innerHTML = '';
-                            parsedJson.instructions.forEach(step => {
-                                const li = document.createElement('li');
-                                li.textContent = step;
-                                recipeInstructionsElem.appendChild(li);
-                            });
-
-                            recipeOutput.classList.remove('hidden');
-                        } else {
-                            recipeErrorElem.textContent = 'レシピの構造が期待通りではありませんでした。';
-                            recipeErrorElem.classList.remove('hidden');
-                        }
-                    } catch (error) {
-                        recipeErrorElem.textContent = `レシピの生成中にエラーが発生しました: ${error.message}`;
-                        recipeErrorElem.classList.remove('hidden');
-                    } finally {
-                        recipeLoadingSpinner.style.display = 'none';
-                    }
-                }
-
-                await fetchWithExponentialBackoff();
-            });
+            // レシピ生成に関するJavaScriptコードは削除されました。
         });
     </script>
 </body>
